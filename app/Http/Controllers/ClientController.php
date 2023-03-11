@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use RealRashid\SweetAlert\Facades\Alert;
-
 use App\Models\User;
+
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
+use RealRashid\SweetAlert\Facades\Alert;
+use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\Validator;
 
 class ClientController extends Controller
@@ -16,7 +18,7 @@ class ClientController extends Controller
      */
     public function index()
     {
-        $User=User::where('role','client')->orderBy('id','desc')->get();
+        $User=User::where('role',2)->orderBy('id','desc')->get();
         return view('dashboard.client.index',compact('User'));
     }
 
@@ -36,17 +38,26 @@ class ClientController extends Controller
         $Validator = Validator::make($request->all(), [
             'name' => ['string', 'max:255'],
             'address' => [ 'string'],
-            'phone' => ['string'],
+            'phone' => ['string','unique:users,phone'],
             'password' => ['required', 'string', 'confirmed'],
         ]);
 
         if(! $Validator->fails()){
-            User::create([
+            $user =User::create([
                 'name' => $request->name,
                 'phone' => $request->phone,
                 'address' => $request->address,
+                'role' => 2,
                 'password' => Hash::make($request->password),
             ]);
+            $role = Role::find(2);
+
+            $permissions = Permission::pluck('id','id')->all();
+            $user->assignRole([$role->id]);
+
+            $role->syncPermissions($permissions);
+
+            $user->assignRole([$role->id]);
             Alert::success('نجاح ', 'تم إضافة الزبون بنجاح');
             return redirect()->back();
             // return redirect()->back()->with('success', 'تم إضافة الزبون بنجاح');

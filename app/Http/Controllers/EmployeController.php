@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use RealRashid\SweetAlert\Facades\Alert;
-
 use App\Models\User;
+
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
+use RealRashid\SweetAlert\Facades\Alert;
+use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\Validator;
 
 
@@ -17,7 +19,7 @@ class EmployeController extends Controller
      */
     public function index()
     {
-        $User=User::where('role','employ')->orderBy('id','desc')->get();
+        $User=User::where('role',3)->orderBy('id','desc')->get();
         return view('dashboard.employ.index',compact('User'));
     }
 
@@ -37,18 +39,27 @@ class EmployeController extends Controller
         $Validator = Validator::make($request->all(), [
             'name' => ['string', 'max:255'],
             'address' => [ 'string'],
-            'phone' => ['string'],
+            'phone' => ['string','unique:users,phone'],
             'password' => ['required', 'string', 'confirmed'],
         ]);
 
         if(! $Validator->fails()){
-            User::create([
+            $user =User::create([
                 'name' => $request->name,
                 'phone' => $request->phone,
                 'address' => $request->address,
-                'role' => 'employ',
+                'role' => 3,
                 'password' => Hash::make($request->password),
             ]);
+
+            $role = Role::find(3);
+
+            $permissions = Permission::pluck('id','id')->all();
+
+            $role->syncPermissions($permissions);
+            $user->assignRole([$role->id]);
+
+            $user->assignRole([$role->id]);
             Alert::success('نجاح ', 'تم إضافة الموظف بنجاح');
             return redirect()->back();
             // return redirect()->back()->with('success', 'تم إضافة الموظف بنجاح');

@@ -114,8 +114,7 @@
                                                                 <li
                                                                     title="Edit">
 
-                                                                    <a href="{{ route('admin.clients.edit',$user->id) }}"><i
-                                                                        class="ri-pencil-fill align-bottom text-muted"></i></a>
+                                                                    <a href="{{ route('admin.clients.edit',$user->id) }}"><i class="ri-pencil-fill fs-16"></i></a>
                                                                 </li>
                                                                 {{-- <li
                                                                     title="Edit">
@@ -124,13 +123,12 @@
                                                                     href="#editModal{{ $user->id }}"><i
                                                                         class="ri-pencil-fill align-bottom text-muted"></i></a>
                                                                 </li> --}}
-                                                                <li class="list-inline-item" data-bs-toggle="tooltip"
+                                                                <li class="list-inline-item text-danger" data-bs-toggle="tooltip"
                                                                     data-bs-trigger="hover" data-bs-placement="top"
                                                                     title="Delete">
-                                                                    <a class="remove-item-btn" data-bs-toggle="modal"
+                                                                    <a class="remove-item-btn text-danger" data-bs-toggle="modal"
                                                                         href="#deleteRecordModal{{ $user->id }}">
-                                                                        <i
-                                                                            class="ri-delete-bin-fill align-bottom text-muted"></i>
+                                                                        <i class="ri-delete-bin-5-fill fs-16"></i></i>
                                                                     </a>
                                                                 </li>
                                                             </ul>
@@ -160,7 +158,7 @@
                                                                         @csrf
                                                                         <div class="mt-4 text-center">
                                                                             <h4 class="fs-semibold">هل أنت متأكد من عملية
-                                                                                الدفع ؟ </h4>
+                                                                                الحذف ؟ </h4>
                                                                             {{-- <p class="text-muted fs-14 mb-4 pt-1">Deleting your company will remove
                                                                     all of your information from our database.</p> --}}
                                                                             <div
