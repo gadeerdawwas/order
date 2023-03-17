@@ -170,7 +170,7 @@
                                     </div>
 
                                     <div class="hstack gap-2 justify-content-end d-print-none mt-4">
-                                        <a href="javascript:window.print()" class="btn btn-success"><i class="ri-printer-line align-bottom me-1"></i> Print</a>
+                                        <a href="javascript:window.print()" class="btn btn-success"><i class="ri-printer-line align-bottom me-1"></i> طباعة</a>
                                     </div>
                                 </div>
                                 <!--end card-body-->

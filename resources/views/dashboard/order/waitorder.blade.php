@@ -138,7 +138,13 @@
                                                         <td>
                                                             <div class="d-flex align-items-center">
 
-                                                                <div class="flex-grow-1 ms-2 name"><a href="{{ $order->link }}">اضغط على رابط</a> </div>
+                                                                <div class="flex-grow-1 ms-2 name">  @if ($order->link)
+                                                                    <a
+                                                                    href="{{ $order->link }}">اضغط على رابط</a>
+                                                                    @else
+                                                                    <span>لا يوجد رابط</span>
+                                                                    @endif
+                                                                    </div></div>
                                                             </div>
                                                         </td>
                                                         <td>

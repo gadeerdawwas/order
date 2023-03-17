@@ -1,6 +1,12 @@
 @extends('dashboard.include.layout')
 
-
+@push('style')
+{{-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> --}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+{{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script> --}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-confirmation/1.0.5/bootstrap-confirmation.min.js"></script>
+<meta name="csrf-token" content="{{ csrf_token() }}">
+@endpush
 @section('content')
     <div class="main-content">
 
@@ -24,16 +30,7 @@
                     </div>
                 </div>
                 <!-- end page title -->
-                @if (session('success'))
-
                 @include('sweetalert::alert')
-
-                @endif
-                @if (Session::has('sweet_alert.alert'))
-            <script>
-            swal({!! Session::get('sweet_alert.alert') !!});
-            </script>
-            @endif
 
 
 
@@ -51,17 +48,38 @@
                                                 طلب
                                             </a>
                                         @endcan
+
+
+                                    </div>
+
+
+                                    <div class="flex-shrink-0">
+                                        <div class="hstack text-nowrap gap-2">
+                                            <button class="btn btn-danger shadow-none btn-sm" data-bs-toggle="modal" data-bs-target="#addmembers"> <i class="ri-printer-line"></i>  <a style="color: #fff" href="{{ route('admin.orders_print',$user_id) }}">طباعة طلبات</a> </button>
+                                            <button class="btn btn-success shadow-none btn-sm" data-bs-toggle="modal" data-bs-target="#addmembers"><i class="ri-filter-2-line me-1 align-bottom"></i>
+                                                 <a class="remove-item-btn "
+                                                data-bs-toggle="modal" style="color: #fff"
+                                                href="#editRecordModal{{ $user_id }}">
+
+                                                تحويل نوع الشحن
+                                            </a>
+                                             </button>
+                                            <button class="btn btn-info shadow-none btn-sm" data-bs-toggle="modal" data-bs-target="#addmembers"><i class="ri-delete-bin-5-fill"></i> <a style="color: #fff" href="{{ route('admin.orders_delete',$user_id) }}">  حذف كل طلبات </a></button>
+
+                                        </div>
                                     </div>
 
                                 </div>
                             </div>
                         </div>
                     </div>
+
+                </div>
                     <!--end col-->
                     <div class="col-xxl-9">
                         <div class="card" id="companyList">
                             <div class="card-header">
-                                <div class="row g-2">
+                                <div class="row g-2 justify-content-between">
                                     <div class="col-md-3">
                                         <div class="search-box">
                                             <input type="text" class="form-control search"
@@ -70,16 +88,38 @@
                                         </div>
                                     </div>
 
+                                        <div class="col-md-3">
+                                            <div class="flex-shrink-0">
+                                                <div class="hstack text-nowrap gap-2">
+                                            <button  class="btn btn-primary delete_all" data-url="{{ url('myproductsDeleteAll') }}"> <i class="ri-delete-bin-5-fill fs-16"></i>  حذف طلبات    </button>
+
+                                        </div>
+                                        </div>
+                                        </div>
+
+
+
                                 </div>
+
+                                {{-- <div class="flex-shrink-0">
+                                    <div class="hstack text-nowrap gap-2"> --}}
+
+
+
+                            {{-- </div> --}}
+                            {{-- </div> --}}
                             </div>
                             <div class="card-body">
                                 <div>
                                     <div class="table-responsive table-card mb-3">
-                                        <table class="table align-middle table-nowrap mb-0" id="customerTable">
+                                        <table class="table  table-nowrap mb-0" id="customerTable">
                                             <thead class="table-light">
                                                 <tr>
-                                                    <th scope="col" style="width: 50px;">
+                                                    {{-- <th scope="col" style="width: 50px;">
                                                         #
+                                                    </th> --}}
+                                                    <th scope="col" >
+                                                        <input type="checkbox" id="master">
                                                     </th>
                                                     <th class="sort" data-sort="name" scope="col"> رقم الفاتورة</th>
                                                     <th class="sort" data-sort="owner" scope="col">تاريخ الطلبية </th>
@@ -101,15 +141,22 @@
                                             </thead>
                                             <tbody class="list form-check-all">
                                                 @foreach ($orders as $order)
-                                                    <tr>
+                                                    {{-- <tr> --}}
+                                                        <tr id="tr_{{$order->id}}">
 
-                                                        <td class="id"><a href="javascript:void(0);"
+                                                            <td>
+                                                                <div class="d-flex align-items-center">
+                                                                <input type="checkbox" class="sub_chk" data-id="{{$order->id}}">
+                                                            </div>
+                                                            </td>
+                                                        {{-- <td class="id"><a href="javascript:void(0);"
                                                                 class="fw-medium link-primary">
                                                                 {{ $loop->iteration }}
-                                                                {{-- <td><input type="checkbox" class="sub_chk" data-id="{{$order->id}}"></td> --}}
+                                                                <input type="checkbox" id="master">
 
                                                             </a>
-                                                        </td>
+                                                        </td> --}}
+
                                                         <td>
                                                             <div class="d-flex align-items-center">
 
@@ -148,6 +195,21 @@
                                                             <ul class="list-inline hstack gap-2 mb-0">
 
 
+                                                                {{-- <li title="show">
+
+                                                                    <a href="{{ url('admin/orders/destroy/',$order->id) }}" class="btn btn-danger btn-sm"
+                                                                        data-tr="tr_{{$order->id}}"
+                                                                        data-toggle="confirmation"
+                                                                        data-btn-ok-label="Delete" data-btn-ok-icon="fa fa-remove"
+                                                                        data-btn-ok-class="btn btn-sm btn-danger"
+                                                                        data-btn-cancel-label="Cancel"
+                                                                        data-btn-cancel-icon="fa fa-chevron-circle-left"
+                                                                        data-btn-cancel-class="btn btn-sm btn-default"
+                                                                        data-title="Are you sure you want to delete ?"
+                                                                        data-placement="left" data-singleton="true">
+                                                                         Delete
+                                                                     </a>
+                                                                </li> --}}
                                                                 <li title="show">
 
                                                                     <a href="{{ route('admin.orders.show', $order->id) }}"><i
@@ -163,7 +225,6 @@
                                                                     <a href="{{ route('admin.singleorder_print', $order->id) }}"><i
                                                                             class="bx bx-printer fs-16"></i></a>
                                                                 </li>
-
                                                                 @can('تعديل طلبية')
                                                                     <li class="list-inline-item text-danger"
                                                                         data-bs-toggle="tooltip" data-bs-trigger="hover"
@@ -604,7 +665,52 @@
                     <!--end col-->
                 </div>
                 <!--end row-->
+                <div class="modal fade zoomIn"
+                id="editRecordModal{{ $user_id }}" tabindex="-1"
+                aria-labelledby="deleteRecordLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="btn-close"
+                                id="deleteRecord-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body p-5 text-center">
 
+                            <form
+                                action="{{ route('admin.itemseditshop', $user_id) }}"
+                                method="get">
+
+                                @csrf
+                                <div class="mt-4 text-center">
+                                    <h4 class="fs-semibold">حالة شحن </h4>
+
+                                    <select class="form-select" name="Shipping_type"
+                                        required>
+                                        <option value="جوي">جوي</option>
+                                        <option value="بحري">بحري</option>
+                                    </select>
+                                    <br>
+                                    <br>
+                                    <br>
+
+                                    <div
+                                        class="hstack gap-2 justify-content-center remove">
+                                        <button
+                                            class="btn btn-danger  btn-link link-success fw-medium text-decoration-none"
+                                            data-bs-dismiss="modal">
+                                            <i
+                                                class="ri-close-line me-1 align-middle"></i>
+                                            إغلاق
+                                        </button>
+                                        <button class="btn btn-info"
+                                            id="delete-record">تعديل !!</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
             <!-- container-fluid -->
         </div>
@@ -615,6 +721,113 @@
 @endsection
 
 @push('script')
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+
+        $('#master').on('click', function(e) {
+         if($(this).is(':checked',true))
+         {
+            $(".sub_chk").prop('checked', true);
+         } else {
+            $(".sub_chk").prop('checked',false);
+         }
+        });
+
+
+        $('.delete_all').on('click', function(e) {
+
+
+            var allVals = [];
+            $(".sub_chk:checked").each(function() {
+                allVals.push($(this).attr('data-id'));
+            });
+
+
+            if(allVals.length <=0)
+            {
+                alert("Please select row.");
+            }  else {
+
+
+                var check = confirm("هل انت متاكد من عملية الجذف ؟");
+                if(check == true){
+
+
+                    var join_selected_values = allVals.join(",");
+
+
+                    $.ajax({
+                        url: $(this).data('url'),
+                        type: 'DELETE',
+                        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                        data: 'ids='+join_selected_values,
+                        success: function (data) {
+                            if (data['success']) {
+                                $(".sub_chk:checked").each(function() {
+                                    $(this).parents("tr").remove();
+                                });
+                                alert(data['success']);
+                            } else if (data['error']) {
+                                alert(data['error']);
+                            } else {
+                                alert('Whoops Something went wrong!!');
+                            }
+                        },
+                        error: function (data) {
+                            alert(data.responseText);
+                        }
+                    });
+
+
+                  $.each(allVals, function( index, value ) {
+                      $('table tr').filter("[data-row-id='" + value + "']").remove();
+                  });
+                }
+            }
+        });
+
+
+        $('[data-toggle=confirmation]').confirmation({
+            rootSelector: '[data-toggle=confirmation]',
+            onConfirm: function (event, element) {
+                element.trigger('confirm');
+            }
+        });
+
+
+        $(document).on('confirm', function (e) {
+            var ele = e.target;
+            e.preventDefault();
+
+
+            $.ajax({
+                url: ele.href,
+                type: 'DELETE',
+                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                success: function (data) {
+                    if (data['success']) {
+                        $("#" + data['tr']).slideUp("slow");
+                        alert(data['success']);
+                    } else if (data['error']) {
+                        alert(data['error']);
+                    } else {
+                        alert('Whoops Something went wrong!!');
+                    }
+                },
+                error: function (data) {
+                    alert(data.responseText);
+                }
+            });
+
+
+            return false;
+        });
+    });
+</script>
+
     <!-- list.js min js -->
     <script src="{{ asset('assets/libs/list.js/list.min.js') }}"></script>
     <script src="{{ asset('assets/libs/list.pagination.js/list.pagination.min.js') }}"></script>

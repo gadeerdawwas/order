@@ -242,6 +242,15 @@
                                                         <td>
                                                             <ul class="list-inline hstack gap-2 mb-0">
 
+                                                                <li class="list-inline-item text-danger"
+                                                                data-bs-toggle="tooltip" data-bs-trigger="hover"
+                                                                data-bs-placement="top" title="edit">
+                                                                <a class="remove-item-btn text-success"
+
+                                                                    href="{{ route('admin.showone_order',$order->id) }}">
+                                                                    <i class="ri-eye-fill fs-16"></i>
+                                                                </a>
+                                                                </li>
                                                                 @can('تعديل طلبية')
                                                                     <li class="list-inline-item text-danger"
                                                                         data-bs-toggle="tooltip" data-bs-trigger="hover"

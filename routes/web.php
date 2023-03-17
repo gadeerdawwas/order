@@ -52,7 +52,6 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function(){
     Route::resource('admins', AdminControllerController::class);
 
 
-    Route::get('order_user/{id}',[ItemController::class ,'order_user'])->name('order_user');
     Route::get('waitorder',[ItemController::class ,'waitorder'])->name('waitorder');
     Route::get('buyorder',[ItemController::class ,'buyorder'])->name('buyorder');
     Route::get('shopingorder',[ItemController::class ,'shopingorder'])->name('shopingorder');
@@ -64,9 +63,17 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function(){
     Route::post('passwordupdate',[DashboardController::class ,'passwordupdate'])->name('passwordupdate');
     Route::get('printprofit/{id}',[ProfileController::class ,'printprofit'])->name('printprofit');
 
+    Route::get('order_user/{id}',[ItemController::class ,'order_user'])->name('order_user');
+    Route::get('orders_print/{id}',[OrderController::class ,'orders_print'])->name('orders_print');
+    Route::get('singleorder_print/{id}',[OrderController::class ,'singleorder_print'])->name('singleorder_print');
+    Route::get('orders_delete/{id}',[OrderController::class ,'orders_delete'])->name('orders_delete');
+    Route::get('itemseditshop/{id}',[OrderController::class ,'itemseditshop'])->name('itemseditshop');
+    Route::get('showone_order/{id}',[ItemController::class ,'showone_order'])->name('showone_order');
+
 
 });
 
+Route::DELETE('myproductsDeleteAll',[ItemController::class ,'myproductsDeleteAll'])->name('myproductsDeleteAll');
 
 Auth::routes(['register' => false]);
 

@@ -117,6 +117,7 @@ class OrderController extends Controller
     public function show(string $id)
     {
         $orders=Order::find($id);
+        // $user=User::where('role',2)->get();
         // return '0000000';
         return view('dashboard.order.show',compact('orders'));
 
@@ -128,8 +129,8 @@ class OrderController extends Controller
     public function edit(string $id)
     {
         $orders=Order::find($id);
-        return '0000000';
-        return view('dashboard.order.show',compact('orders'));
+        $user=User::where('role',2)->get();
+        return view('dashboard.order.edit',compact('orders','user'));
     }
 
     /**
@@ -137,7 +138,60 @@ class OrderController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        // return $request;
+        $order=Order::find($id);
+        // return $order->Item;
+
+        $name = $request->input('name');
+        $link = $request->input('link');
+        $size = $request->input('size');
+
+        $Shipping_types = $request->input('Shipping_type');
+        $numbers = $request->input('number');
+        $sizes = $request->input('size');
+        $prices = $request->input('price');
+        $price_Shippings = $request->input('price_Shipping');
+        $total= null ;
+
+
+        // if(!empty($request->numbers)){
+
+            for($count = 0; $count < count($order->Item); $count++)
+            {
+                // return $order->Item[$count]->id;
+
+
+
+
+                Item::find($order->Item[$count]->id)->update([
+                    'Shipping_type'  => $Shipping_types[$count],
+                    'number'  => $numbers[$count],
+                    'price'  => $prices[$count],
+                    'price_Shipping'  => $price_Shippings[$count],
+                    'name'  => $name[$count],
+                    'link'  => $link[$count],
+                    'size'  => $size[$count],
+                ]);
+
+                $total += $numbers[$count] * $prices[$count] + $price_Shippings[$count];
+
+                Profile::where('order_id' , $order->id)->update([
+                    'amount' => - $total,
+                    'user_id' => $request->user_id
+                ]);
+
+            }
+
+
+
+            Order::find($order->id)->update([
+                'total' => $total
+            ]);
+            Alert::success('نجاح ', '
+            تم تعديل الطلبية بنجاح
+            اجمالى الطلبية : '.$total  );
+            return redirect()->route('admin.orders.index');
+    // }
     }
 
     /**
@@ -166,6 +220,8 @@ class OrderController extends Controller
             Order::find($id)->update([
                 'state_payment' => $request->state
             ]);
+            // redirect()->with('success', 'User Deleted successfully.');
+
             Alert::success('نجاح ', 'تم تعديل طلبية بنجاح');
             return redirect()->back();
         } else {
@@ -197,5 +253,53 @@ class OrderController extends Controller
         ]);
         Alert::success('نجاح ', 'تم إضافة ملاحظة بنجاح');
         return redirect()->back();
+    }
+    public function orders_print($id)
+    {
+
+
+        $orders=Order::where('user_id',$id)->get();
+        $orders_count=Order::where('user_id',$id)->count();
+        $profits_amount=Order::where('user_id',$id)->sum('total');
+        return view('dashboard.order.print',compact('orders','orders_count','profits_amount'));
+
+    }
+    public function singleorder_print($id)
+    {
+
+
+        $orders=Item::where('order_id',$id)->get();
+        // $orders_count=Order::where('user_id',$id)->count();
+        $profits_amount=Order::where('id',$id)->sum('total');
+        // return $orders;
+        return view('dashboard.order.singleprint',compact('orders','profits_amount'));
+
+    }
+    public function orders_delete($id)
+    {
+
+
+        $Order=Order::where('user_id',$id)->pluck('id');
+
+        Order::where('user_id',$id)->delete();
+        Item::whereIn('order_id',$Order)->delete();
+        Profile::whereIn('order_id',$Order)->delete();
+        Alert::success('نجاح ', 'تم حذف طلبية بنجاح');
+        return redirect()->back();
+
+    }
+    public function itemseditshop(Request $request, $id)
+    {
+
+
+        $Order=Order::where('user_id',$id)->pluck('id');
+
+        Item::whereIn('order_id',$Order)->update([
+            'Shipping_type' => $request->Shipping_type
+
+        ]);
+        Alert::success('نجاح ', 'تم حذف طلبية بنجاح');
+        return redirect()->back();
+
     }
 }

@@ -20,12 +20,12 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                            <h4 class="mb-sm-0"> إضافة طلبية </h4>
+                            <h4 class="mb-sm-0"> تعديل طلبية </h4>
 
                             <div class="page-title-left">
                                 <ol class="breadcrumb m-0">
                                     <li class="breadcrumb-item"><a href="javascript: void(0);">طلبات</a></li>
-                                    <li class="breadcrumb-item active">إضافة طلبية </li>
+                                    <li class="breadcrumb-item active">تعديل طلبية </li>
                                 </ol>
                             </div>
 
@@ -34,17 +34,20 @@
                 </div>
                 <!-- end page title -->
                 @include('sweetalert::alert')
-                <form action="{{ route('admin.orders.store') }}" method="POST" enctype="multipart/form-data">
+
+                <form action="{{ route('admin.orders.update',$orders->id) }}" method="POST" enctype="multipart/form-data">
 
                     <div class="row">
                         <div class="col-lg-10" data-repeater-list="List_size_prise">
                             @csrf
-
+                            @method('put')
+                            @foreach ($orders->Item as $item)
                             <div class="card">
 
-
                                 <div class="card-body">
+
                                     <div class="tab-content">
+
                                         <div class="tab-pane active" id="addproduct-general-info" role="tabpanel">
 
                                             <div class="row targetDiv" id="div0">
@@ -60,7 +63,7 @@
                                                                 <label class="form-label" for="product-title-input">إسم
                                                                     منتج</label>
                                                                 <input type="text" class="form-control" name="name[]"
-                                                                    required id="product-title-input"
+                                                                    required id="product-title-input" value="{{ $item->name }}"
                                                                     placeholder="ادخل اسم منتج">
                                                             </div>
 
@@ -68,30 +71,19 @@
                                                             <div class="mb-3">
                                                                 <label class="form-label" for="product-title-input">رابط
                                                                     الطلبية </label>
-                                                                <input type="text" class="form-control" name="link[]"
+                                                                <input type="text" class="form-control" name="link[]"  value="{{ $item->link }}"
                                                                     required id="product-title-input"
                                                                     placeholder="ادخل اسم رابط الطلبية ">
                                                             </div>
-                                                            <div class="mb-3">
-                                                                <label class="form-label" for="product-title-input">صورة
-                                                                    الطلبية </label>
-                                                                <input type="file" class="form-control" name="image[]"
-                                                                    id="product-title-input">
-                                                            </div>
 
 
-                                                            <div class="mb-3">
-                                                                <label class="form-label" for="product-title-input">وصف
-                                                                    الطلبية </label>
-                                                                <textarea name="description[]" class="form-control" required id="" cols="5" rows="5"></textarea>
-                                                            </div>
 
 
                                                             <div class="row">
                                                                 <div class="col-lg-4">
                                                                     <label class="form-label" for="product-title-input">
                                                                         العدد</label>
-                                                                    <input type="number" class="form-control qty1"
+                                                                    <input type="number" class="form-control qty1"  value="{{ $item->number }}"
                                                                         name="number[]" required id="product-title-input"
                                                                         placeholder="ادخل  العدد">
                                                                 </div>
@@ -99,16 +91,20 @@
                                                                     <label class="form-label" for="product-title-input">
                                                                         المقاس </label>
                                                                     <input type="text" class="form-control"
-                                                                        name="size[]" required id="product-title-input"
-                                                                        placeholder="ادخل  المقاس ">
+                                                                        name="size[]"  id="product-title-input"
+                                                                        placeholder="ادخل  المقاس "  value="{{ $item->size }}" >
                                                                 </div>
                                                                 <div class="col-lg-4">
                                                                     <label class="form-label" for="product-title-input"> نوع
                                                                         الشحن </label>
                                                                     <select class="form-select " name="Shipping_type[]"
                                                                         required>
-                                                                        <option value="جوي">جوي</option>
-                                                                        <option value="بحري">بحري</option>
+                                                                        <option @if ($item->Shipping_type == 'جوي')
+                                                                            selected
+                                                                        @endif value="جوي">جوي</option>
+                                                                        <option  @if ($item->Shipping_type == 'بحري')
+                                                                            selected
+                                                                        @endif value="بحري">بحري</option>
                                                                     </select>
                                                                 </div>
                                                             </div>
@@ -118,39 +114,24 @@
                                                                 <div class="col-lg-4">
                                                                     <label class="form-label" for="product-title-input"> سعر
                                                                         طلبية </label>
-                                                                    <input type="number qty1" class="form-control"
+                                                                    <input type="number qty1" class="form-control" value="{{ $item->price }}"
                                                                         name="price[]" required id="product-title-input"
-                                                                        placeholder="ادخل  سعر طلبية">
+                                                                        placeholder="ادخل  العدد">
                                                                 </div>
                                                                 <div class="col-lg-4">
                                                                     <label class="form-label" for="product-title-input"> سعر
                                                                         الشحن </label>
-                                                                    <input type="number qty1" class="form-control"
+                                                                    <input type="number qty1" class="form-control" value="{{ $item->price_Shipping }}"
                                                                         name="price_Shipping[]" required
                                                                         id="product-title-input"
-                                                                        placeholder="ادخل  سعر الشحن ">
+                                                                        placeholder="ادخل  المقاس ">
                                                                 </div>
 
                                                             </div>
 
 
 
-                                                            <br>
-                                                            <br>
-                                                            <br>
-                                                            <br>
-                                                            <div class="row">
-                                                                <div class="col-xs-12 col-md-3">
-                                                                    <div class="form-group">
-                                                                        <label>&nbsp;</label>
-                                                                        <button type="button" class="btn btn-success btn-sm btn-add">
-                                                            <i class="fa fa-plus" aria-hidden="true">+</i>
-                                                          </button>
 
-
-                                                                    </div>
-                                                                </div>
-                                                            </div>
 
 
 
@@ -164,40 +145,47 @@
                                             <!-- end row -->
                                         </div>
                                         <!-- end tab-pane -->
-                                        <div class="mb-3">
-                                            <label class="form-label" for="product-title-input">إسم
-                                                لزبون</label>
 
-
-
-                                           <select class="myselect" style="width:500px;" name="user_id">
-
-                                            @if (auth()->user()->role == 2)
-                                            <option value="{{ auth()->user()->id }}">{{ auth()->user()->name }}</option>
-
-                                            @else
-                                            @foreach ($user as $u)
-                                            <option value="{{ $u->id }}">{{ $u->name }}</option>
-
-                                            @endforeach
-
-                                            @endif
-                                        </select>
-
-
-                                            </div>
 
                                         <!-- end tab pane -->
                                     </div>
+
+
                                     <!-- end tab content -->
                                 </div>
-                                <!-- end card body -->
+                                @endforeach
 
+
+                                <!-- end card body -->
+                                <div class="mb-3">
+                                    <label class="form-label" for="product-title-input">إسم
+                                        لزبون</label>
+
+
+
+                                   <select class="myselect" style="width:500px;" name="user_id">
+
+                                    @if (auth()->user()->role == 2)
+                                    <option value="{{ auth()->user()->id }}">{{ auth()->user()->name }}</option>
+
+                                    @else
+                                    @foreach ($user as $u)
+                                    <option @if ($orders->user_id == $u->id)
+                                        selected
+                                    @endif value="{{ $u->id }}">{{ $u->name }}</option>
+
+                                    @endforeach
+
+                                    @endif
+                                </select>
+
+
+                                    </div>
                                 <!-- end card body -->
                             </div>
                             <!-- end card -->
                             <div class="text-end mb-3">
-                                <button type="submit" class="btn btn-success w-sm">حفظ</button>
+                                <button type="submit" class="btn btn-success w-sm">تعديل</button>
                             </div>
 
 

@@ -89,7 +89,7 @@
                                                         </td>
                                                         <td>
                                                             <div class="d-flex align-items-center">
-                                                                <a  href="{{ route('admin.orders.show',(($Feedback->Order) ? $Feedback->Order->id : '')) }}">{{ (($Feedback->Order) ? $Feedback->Order->id : '') }}</a>
+                                                                <a  href="{{ route('admin.showone_order',(($Feedback->Order) ? $Feedback->Order->id : '')) }}">{{ (($Feedback->Order) ? $Feedback->Order->id : '') }}</a>
 
                                                             </div>
                                                         </td>
