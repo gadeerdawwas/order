@@ -24,7 +24,7 @@
 
                             <div class="page-title-left">
                                 <ol class="breadcrumb m-0">
-                                    <li class="breadcrumb-item"><a href="javascript: void(0);">طلبيةات</a></li>
+                                    <li class="breadcrumb-item"><a href="javascript: void(0);">طلبات</a></li>
                                     <li class="breadcrumb-item active">إضافة طلبية </li>
                                 </ol>
                             </div>
@@ -174,9 +174,7 @@
 
 
                                                                 </div>
-                                                                {{-- <script type="text/javascript">
-                                                                $(".chosen").chosen();
-                                                                </script> --}}
+
                                                             </div>
 
 

@@ -74,7 +74,7 @@
                                     <div class="col-md-3">
                                         <div class="search-box">
                                             <input type="text" class="form-control search"
-                                                placeholder="البحق عن الطلب  ...">
+                                                placeholder="البحث عن الطلب  ...">
                                             <i class="ri-search-line search-icon"></i>
                                         </div>
                                     </div>
@@ -142,8 +142,14 @@
                                                         <td>
                                                             <div class="d-flex align-items-center">
 
-                                                                <div class="flex-grow-1 ms-2 name"><a
-                                                                        href="{{ $order->link }}">اضغط على رابط</a> </div>
+                                                                <div class="flex-grow-1 ms-2 name">
+                                                                    @if ($order->link)
+                                                                    <a
+                                                                    href="{{ $order->link }}">اضغط على رابط</a>
+                                                                    @else
+                                                                    <span>لا يوجد رابط</span>
+                                                                    @endif
+                                                                    </div>
                                                             </div>
                                                         </td>
                                                         <td>

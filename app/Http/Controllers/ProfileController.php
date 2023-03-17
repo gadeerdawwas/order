@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Profile;
 use Illuminate\Http\Request;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class ProfileController extends Controller
 {
@@ -12,10 +14,11 @@ class ProfileController extends Controller
      */
     public function index()
     {
+        $user=User::where('role',2)->get();
         $profits=Profile::groupBy('user_id')
        ->selectRaw('user_id, sum(amount) as amount')->get();
         // return $profits;
-        return view('dashboard.profit.index',compact('profits'));
+        return view('dashboard.profit.index',compact('profits','user'));
     }
 
     /**
@@ -31,7 +34,13 @@ class ProfileController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Profile::create([
+            'amount' => $request->amount,
+            'note' => $request->note,
+            'user_id' => $request->user_id,
+        ]);
+        Alert::success('نجاح ', 'تم اضافة الدفعة بنجاح');
+        return redirect()->back();
     }
 
     /**

@@ -16,7 +16,7 @@ class DashboardController extends Controller
     {
         $sumcost=Cost::sum('costs');
         $deiver_order=Order::where('state_payment',1)->sum('total');
-        $nodeiver_order=Order::where('state_payment',2)->sum('total');
+        $nodeiver_order=Order::where('state_payment',0)->sum('total');
         $Item=Item::where('state',5)->get();
         $User=User::where('role',2)->count();
         $User_ship=Item::where('state',4)->sum('price_Shipping');
@@ -24,6 +24,20 @@ class DashboardController extends Controller
         foreach($Item as $t){
             $total +=$t->number * $t->price + $t->price_Shipping;
         }
+        if(auth()->user()->role == 2){
+            // $sumcost=0;
+            $deiver_order=Order::where('user_id',auth()->user()->id)->where('state_payment',1)->sum('total');
+            $nodeiver_order=Order::where('user_id',auth()->user()->id)->where('state_payment',0)->sum('total');
+            $id_order=Order::where('user_id',auth()->user()->id)->pluck('id');
+            $Item=Item::whereIn('order_id',$id_order)->where('state',5)->get();
+            // $User=User::where('role',2)->count();
+            $User_ship=Item::whereIn('order_id',$id_order)->where('state',4)->sum('price_Shipping');
+            $total=0;
+            foreach($Item as $t){
+                $total +=$t->number * $t->price + $t->price_Shipping;
+            }
+        }
+
         // return $total;
         return view('dashboard.index',compact('User_ship','sumcost','deiver_order','nodeiver_order','total','User'));
     }

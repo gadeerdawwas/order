@@ -70,7 +70,7 @@
                                     <div class="col-md-3">
                                         <div class="search-box">
                                             <input type="text" class="form-control search"
-                                                placeholder="البحق عن الطلب  ...">
+                                                placeholder="البحث عن الطلب  ...">
                                             <i class="ri-search-line search-icon"></i>
                                         </div>
                                     </div>

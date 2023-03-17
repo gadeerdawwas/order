@@ -1,21 +1,6 @@
 @extends('dashboard.include.layout')
 
-@push('style')
-<style>
-    .zoom {
-      /* padding: 100px; */
-        background-color: #fff;
-      transition: transform .2s; /* Animation */
-      width: 50px;
-      height: 50px;
-      margin: 0 auto;
-    }
 
-    .zoom:hover {
-      transform: scale(4); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
-    }
-    </style>
-@endpush
 @section('content')
     <div class="main-content">
 
@@ -26,12 +11,12 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                            <h4 class="mb-sm-0">طلبات </h4>
+                            <h4 class="mb-sm-0">أدمن</h4>
 
                             <div class="page-title-right">
                                 <ol class="breadcrumb m-0">
                                     <li class="breadcrumb-item"><a href="javascript: void(0);">لوحة التحكم</a></li>
-                                    <li class="breadcrumb-item active">طلبات </li>
+                                    <li class="breadcrumb-item active">أدمن</li>
                                 </ol>
                             </div>
 
@@ -49,14 +34,9 @@
                             <div class="card-header">
                                 <div class="d-flex align-items-center flex-wrap gap-2">
                                     <div class="flex-grow-1">
-
-
-                                        @can('إضافة طلبية')
-                                        <a href="{{ route('admin.orders.create') }}"  class="btn btn-info add-btn" >
-                                            <i class="ri-add-fill me-1 align-bottom"></i>اضافة
-                                            طلب
-                                        </a>
-                                        @endcan
+                                        <button class="btn btn-info add-btn" data-bs-toggle="modal"
+                                            data-bs-target="#showModal"><i class="ri-add-fill me-1 align-bottom"></i>اضافة
+                                            ادمن </button>
                                     </div>
 
                                 </div>
@@ -71,7 +51,7 @@
                                     <div class="col-md-3">
                                         <div class="search-box">
                                             <input type="text" class="form-control search"
-                                                placeholder="البحث عن الطلب  ...">
+                                                placeholder="البحث عن ادمن  ...">
                                             <i class="ri-search-line search-icon"></i>
                                         </div>
                                     </div>
@@ -84,175 +64,72 @@
                                         <table class="table align-middle table-nowrap mb-0" id="customerTable">
                                             <thead class="table-light">
                                                 <tr>
-                                                    {{-- <th scope="col" style="width: 50px;">
+                                                    <th scope="col" style="width: 50px;">
                                                         #
-                                                    </th> --}}
-                                                    <th class="sort" data-sort="name" scope="col">رقم الطلب </th>
-                                                    <th class="sort" data-sort="name" scope="col">رقم الفاتورة </th>
-                                                    <th class="sort" data-sort="name" scope="col"> صورة </th>
-                                                    <th class="sort" data-sort="name" scope="col"> رابط </th>
-                                                    <th class="sort" data-sort="name" scope="col"> نوع الشحن </th>
-                                                    <th class="sort" data-sort="name" scope="col">  وصف </th>
-                                                    <th class="sort" data-sort="name" scope="col">  المقاس </th>
-                                                    <th class="sort" data-sort="name" scope="col">  العدد </th>
+                                                    </th>
+                                                    <th class="sort" data-sort="name" scope="col">الاسم</th>
+                                                    <th class="sort" data-sort="industry_type" scope="col">
+                                                        رقم الجوال</th>
 
-                                                    <th class="sort" data-sort="industry_type" scope="col">  السعر  </th>
-                                                    <th class="sort" data-sort="name" scope="col">  سعر الشحن  </th>
-                                                    <th class="sort" data-sort="name" scope="col">   اجمالى الطلب  </th>
-                                                    <th class="sort" data-sort="owner" scope="col"> حالة </th>
-
-
+                                                    {{-- <th scope="col">صلاحية </th> --}}
                                                     <th scope="col">العمليات</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="list form-check-all">
-                                                @foreach ($orders as $order)
+                                                @foreach ($User as $user)
                                                     <tr>
-
-                                                        {{-- <td class="id" ><a
+                                                        <th scope="row">
+                                                            <div class="form-check">
+                                                                {{ $loop->iteration }}
+                                                            </div>
+                                                        </th>
+                                                        <td class="id" style="display:none;"><a
                                                                 href="javascript:void(0);"
                                                                 class="fw-medium link-primary">{{ $loop->iteration }}</a>
-                                                        </td> --}}
-                                                        <td>
-                                                            <div class="d-flex align-items-center">
-
-                                                                <div class="flex-grow-1 ms-2 name">{{ $order->id }}</div>
-                                                            </div>
                                                         </td>
                                                         <td>
                                                             <div class="d-flex align-items-center">
 
-                                                                <div class="flex-grow-1 ms-2 name">
-                                                                    <a  href="{{ route('admin.orders.show',(($order->Order) ? $order->Order->id : '')) }}">{{ (($order->Order) ? $order->Order->id : '') }}</a>
-                                                                    </div>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div class="d-flex align-items-center">
-
-                                                                <div class="flex-grow-1 ms-2 name">
-                                                                    <img class="zoom" src="{{ asset('upload/order/'.$order->image) }}" alt="" width="50px">
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div class="d-flex align-items-center">
-
-                                                                <div class="flex-grow-1 ms-2 name"><a href="{{ $order->link }}">اضغط على رابط</a> </div>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div class="d-flex align-items-center">
-
-                                                                <div class="flex-grow-1 ms-2 name">{{ $order->Shipping_type }}</div>
-                                                            </div>
-                                                        </td>
-
-                                                        <td>
-                                                            <div class="d-flex align-items-center">
-
-                                                                <div class="flex-grow-1 ms-2 name">{{ $order->description }}</div>
-                                                            </div>
-                                                        </td>
-
-                                                        <td>
-                                                            <div class="d-flex align-items-center">
-
-                                                                <div class="flex-grow-1 ms-2 name">{{ $order->size }}</div>
-                                                            </div>
-                                                        </td>
-
-                                                        <td>
-                                                            <div class="d-flex align-items-center">
-
-                                                                <div class="flex-grow-1 ms-2 name">{{ $order->number }}</div>
-                                                            </div>
-                                                        </td>
-                                                        <td>
-                                                            <div class="d-flex align-items-center">
-
-                                                                <div class="flex-grow-1 ms-2 name">{{ $order->price }}</div>
+                                                                <div class="flex-grow-1 ms-2 name">{{ $user->name }}</div>
                                                             </div>
                                                         </td>
 
 
-                                                        <td>
-                                                            <div class="d-flex align-items-center">
-
-                                                                <div class="flex-grow-1 ms-2 industry_type">{{ $order->price_Shipping }}</div>
-                                                            </div>
-                                                        <td>
-                                                            <div class="d-flex align-items-center">
-
-                                                                <div class="flex-grow-1 ms-2 industry_type">{{  $order->number*$order->price +  $order->price_Shipping }}</div>
-                                                            </div>
+                                                        <td class="industry_type"> <a
+                                                                href="tel:+{{ $user->phone }}">{{ $user->phone }}</a>
                                                         </td>
-
-
-                                                        <td>
-                                                            <div class="d-flex align-items-center">
-
-                                                                <div class="flex-grow-1 ms-2 owner">
-
-
-
-
-                                                                    @if ($order->state == 0)
-                                                                        <span class="badge text-bg-primary"> قيد الانتظار </span>
-                                                                    @elseif ($order->state == 1)
-                                                                    <span class="badge text-bg-secondary">  تم الشراء </span>
-                                                                    @elseif ($order->state == 2)
-                                                                    <span class="badge text-bg-warning" >  تم الشحن  </span>
-                                                                    @elseif ($order->state == 3)
-                                                                    <span class="badge text-bg-info" >  جاري التسليم  </span>
-                                                                    @elseif ($order->state == 4)
-                                                                    <span class="badge text-bg-success" >  تم التسليم   </span>
-                                                                    @elseif ($order->state == 5)
-                                                                    <span class="badge text-bg-dark">  مرجع  </span>
-
-                                                                    @endif
-
-
-                                                                </div>
-                                                            </div>
-                                                        </td>
-
-
 
 
                                                         <td>
                                                             <ul class="list-inline hstack gap-2 mb-0">
 
 
+                                                                <li
+                                                                    title="Edit">
 
-                                                                @can('تعديل طلبية')
-                                                                <li class="list-inline-item text-danger"
-                                                                    data-bs-toggle="tooltip" data-bs-trigger="hover"
-                                                                    data-bs-placement="top" title="edit">
-                                                                    <a class="remove-item-btn text-success"
-                                                                        data-bs-toggle="modal"
-                                                                        href="#editRecordModal{{ $order->id }}">
-                                                                        <i class="ri-pencil-fill fs-16"></i>
-                                                                    </a>
-                                                                @endcan
+                                                                    <a href="{{ route('admin.admins.edit',$user->id) }}"><i class="ri-pencil-fill fs-16"></i></a>
+                                                                </li>
+                                                                {{-- <li
+                                                                    title="Edit">
 
-                                                                @can('حذف طلبية')
-                                                                <li class="list-inline-item text-danger"
-                                                                    data-bs-toggle="tooltip" data-bs-trigger="hover"
-                                                                    data-bs-placement="top" title="Delete">
-                                                                    <a class="remove-item-btn text-danger"
-                                                                        data-bs-toggle="modal"
-                                                                        href="#deleteRecordModal{{ $order->id }}">
+                                                                    <a data-bs-toggle="modal"
+                                                                    href="#editModal{{ $user->id }}"><i
+                                                                        class="ri-pencil-fill align-bottom text-muted"></i></a>
+                                                                </li> --}}
+                                                                <li class="list-inline-item" data-bs-toggle="tooltip"
+                                                                    data-bs-trigger="hover" data-bs-placement="top"
+                                                                    title="Delete">
+                                                                    <a class="remove-item-btn text-danger" data-bs-toggle="modal"
+                                                                        href="#deleteRecordModal{{ $user->id }}">
                                                                         <i class="ri-delete-bin-5-fill fs-16"></i></i>
                                                                     </a>
                                                                 </li>
-                                                            @endcan
                                                             </ul>
                                                         </td>
                                                     </tr>
 
 
-                                                    <div class="modal fade zoomIn" id="deleteRecordModal{{ $order->id }}"
+                                                    <div class="modal fade zoomIn" id="deleteRecordModal{{ $user->id }}"
                                                         tabindex="-1" aria-labelledby="deleteRecordLabel"
                                                         aria-hidden="true">
                                                         <div class="modal-dialog modal-dialog-centered">
@@ -268,14 +145,15 @@
                                                                         colors="primary:#405189,secondary:#f06548"
                                                                         style="width:90px;height:90px"></lord-icon>
                                                                     <form
-                                                                        action="{{ route('admin.items.destroy', $order->id) }}"
+                                                                        action="{{ route('admin.admins.destroy', $user->id) }}"
                                                                         method="post">
                                                                         @method('delete')
                                                                         @csrf
                                                                         <div class="mt-4 text-center">
                                                                             <h4 class="fs-semibold">هل أنت متأكد من عملية
                                                                                 الحذف ؟ </h4>
-
+                                                                            {{-- <p class="text-muted fs-14 mb-4 pt-1">Deleting your company will remove
+                                                                    all of your information from our database.</p> --}}
                                                                             <div
                                                                                 class="hstack gap-2 justify-content-center remove">
                                                                                 <button
@@ -294,62 +172,76 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="modal fade zoomIn" id="editRecordModal{{ $order->id }}"
+
+                                                    <div class="modal fade zoomIn" id="editModal{{ $user->id }}"
                                                         tabindex="-1" aria-labelledby="deleteRecordLabel"
                                                         aria-hidden="true">
-                                                        <div class="modal-dialog modal-dialog-centered">
+                                                        <div class="modal-dialog ">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
                                                                     <button type="button" class="btn-close"
                                                                         id="deleteRecord-close" data-bs-dismiss="modal"
                                                                         aria-label="Close"></button>
                                                                 </div>
-                                                                <div class="modal-body p-5 text-center">
-
-                                                                    <form
-                                                                        action="{{ route('admin.itemsedit', $order->id) }}"
-                                                                        method="post">
-
+                                                                <div class="modal-body ">
+                                                                    <form class="{{ route('admin.employupdate',$user->id) }}" method="post" autocomplete="off">
                                                                         @csrf
-                                                                        <div class="mt-4 text-center">
-                                                                            <h4 class="fs-semibold">حالة الطلب </h4>
+                                                                            <div class="modal-body">
+                                                                                <input type="hidden" id="id-field">
+                                                                                <div class="row g-3">
+                                                                                    <div class="col-lg-12">
 
-                                                                            <select class="form-select" name="state"
-                                                                                required>
-                                                                                <option value="0">قيد الانتظار </option>
-                                                                                <option value="1">تم الشراء </option>
-                                                                                <option value="2">تم الشحن </option>
-                                                                                <option value="3">جاري التسليم </option>
-                                                                                <option value="4">تم التسليم </option>
-                                                                                <option value="5">مرجع</option>
-                                                                            </select>
-                                                                            <br>
-                                                                            <br>
-                                                                            <br>
 
-                                                                            <div
-                                                                                class="hstack gap-2 justify-content-center remove">
-                                                                                <button
-                                                                                    class="btn btn-danger  btn-link link-success fw-medium text-decoration-none"
-                                                                                    data-bs-dismiss="modal">
-                                                                                    <i
-                                                                                        class="ri-close-line me-1 align-middle"></i>
-                                                                                    إغلاق
-                                                                                </button>
-                                                                                <button class="btn btn-info"
-                                                                                    id="delete-record">تعديل !!</button>
+                                                                                        <div class="row">
+                                                                                            <div class="col-lg-10">
+                                                                                                <label for="companyname-field"
+                                                                                                    class="form-label">الاسم </label>
+                                                                                                <input type="text" id="companyname-field" name="name" required
+                                                                                                    class="form-control" placeholder="ادخل الاسم " value="{{ $user->name }}"
+                                                                                                    required="">
+                                                                                            </div>
+
+
+
+
+
+                                                                                    <div class="col-lg-10">
+                                                                                        <div>
+                                                                                            <label for="location-field"
+                                                                                                class="form-label">رقم الجوال </label>
+                                                                                            <input type="text" id="location-field" name="phone" required
+                                                                                                class="form-control" placeholder="ادخل رقم الجوال" value="{{ $user->phone }}"
+                                                                                                required="">
+                                                                                        </div>
+                                                                                    </div>
+
+
+
+
+                                                                                </div>
+
+
+                                                                                </div>
+
+
+
                                                                             </div>
-                                                                        </div>
-                                                                    </form>
+                                                                            <div class="modal-footer">
+                                                                                <div class="hstack gap-2 justify-content-end">
+                                                                                    <button type="button" class="btn btn-light"
+                                                                                        data-bs-dismiss="modal">إغلاق</button>
+                                                                                    <button type="submit" class="btn btn-success" id="add-btn">
+                                                                                        تعديل </button>
+                                                                                    <!-- <button type="button" class="btn btn-success" id="edit-btn">Update</button> -->
+                                                                                </div>
+                                                                            </div>
+                                                                        </form>
+
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-
-
                                                 @endforeach
-
-
 
                                             </tbody>
                                         </table>
@@ -383,17 +275,16 @@
                                 </div>
 
                                 <!--end add modal-->
-
                                 <div class="modal fade" id="showModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                                 aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered modal-lg">
                                     <div class="modal-content border-0">
                                         <div class="modal-header bg-soft-info p-3">
-                                            <h5 class="modal-title" id="exampleModalLabel"></h5>
+                                            {{-- <h5 class="modal-title" id="exampleModalLabel"></h5> --}}
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                                                 id="close-modal"></button>
                                         </div>
-                                        <form class="{{ route('admin.orders.store') }}" method="post" autocomplete="off">
+                                        <form class="{{ route('admin.admins.store') }}" method="post" autocomplete="off">
                                             @csrf
                                             <div class="modal-body">
                                                 <input type="hidden" id="id-field">
@@ -419,7 +310,7 @@
                                                                 </div>
                                                                 <div class="avatar-lg p-1">
                                                                     <div class="avatar-title bg-light rounded-circle">
-                                                                        <img src="{{ asset('assets/images/orders/multi-order.jpg') }}"
+                                                                        <img src="{{ asset('assets/images/users/multi-user.jpg') }}"
                                                                             id="companylogo-img"
                                                                             class="avatar-md rounded-circle object-cover">
                                                                     </div>
@@ -435,15 +326,7 @@
                                                                     required="">
                                                             </div>
 
-                                                            <div class="col-lg-6">
-                                                                <div>
-                                                                    <label for="owner-field" class="form-label">
-                                                                        العنوان</label>
-                                                                    <input type="text" id="owner-field" name="address"
-                                                                        required class="form-control" placeholder="ادخل العنوان"
-                                                                        required="">
-                                                                </div>
-                                                            </div>
+
 
 
 
@@ -500,6 +383,7 @@
                                     </div>
                                 </div>
                             </div>
+
                                 <!--end delete modal -->
 
                             </div>

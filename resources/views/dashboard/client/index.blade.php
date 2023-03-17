@@ -11,12 +11,12 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                            <h4 class="mb-sm-0">الزباين</h4>
+                            <h4 class="mb-sm-0">الزبائن</h4>
 
                             <div class="page-title-right">
                                 <ol class="breadcrumb m-0">
                                     <li class="breadcrumb-item"><a href="javascript: void(0);">لوحة التحكم</a></li>
-                                    <li class="breadcrumb-item active">الزباين</li>
+                                    <li class="breadcrumb-item active">الزبائن</li>
                                 </ol>
                             </div>
 
@@ -58,7 +58,7 @@
                                     <div class="col-md-3">
                                         <div class="search-box">
                                             <input type="text" class="form-control search"
-                                                placeholder="البحق عن الزبون  ...">
+                                                placeholder="البحث عن الزبون  ...">
                                             <i class="ri-search-line search-icon"></i>
                                         </div>
                                     </div>
@@ -97,7 +97,9 @@
                                                         <td>
                                                             <div class="d-flex align-items-center">
 
-                                                                <div class="flex-grow-1 ms-2 name">{{ $user->name }}</div>
+                                                                <div class="flex-grow-1 ms-2 name">
+                                                                    <a href="{{ route('admin.order_user',$user->id) }}">{{ $user->name }}</a>
+                                                                    </div>
                                                             </div>
                                                         </td>
 
@@ -382,7 +384,7 @@
                                 <div class="modal-dialog modal-dialog-centered modal-lg">
                                     <div class="modal-content border-0">
                                         <div class="modal-header bg-soft-info p-3">
-                                            <h5 class="modal-title" id="exampleModalLabel"></h5>
+                                            <!--<h5 class="modal-title" id="exampleModalLabel"></h5>-->
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                                                 id="close-modal"></button>
                                         </div>
@@ -395,24 +397,24 @@
                                                         <div class="text-center">
                                                             <div class="position-relative d-inline-block">
                                                                 <div class="position-absolute bottom-0 end-0">
-                                                                    <label for="company-logo-input" class="mb-0"
-                                                                        data-bs-toggle="tooltip" data-bs-placement="right"
-                                                                        aria-label="Select Image"
-                                                                        data-bs-original-title="Select Image">
-                                                                        <div class="avatar-xs cursor-pointer">
-                                                                            <div
-                                                                                class="avatar-title bg-light border rounded-circle text-muted">
-                                                                                <i class="ri-image-fill"></i>
-                                                                            </div>
-                                                                        </div>
+                                                                    <!--<label for="company-logo-input" class="mb-0"-->
+                                                                    <!--    data-bs-toggle="tooltip" data-bs-placement="right"-->
+                                                                    <!--    aria-label="Select Image"-->
+                                                                    <!--    data-bs-original-title="Select Image">-->
+                                                                        <!--<div class="avatar-xs cursor-pointer">-->
+                                                                        <!--    <div-->
+                                                                        <!--        class="avatar-title bg-light border rounded-circle text-muted">-->
+                                                                                <!--<i class="ri-image-fill"></i>-->
+                                                                        <!--    </div>-->
+                                                                        <!--</div>-->
                                                                     </label>
-                                                                    <input class="form-control d-none" value=""
-                                                                        id="company-logo-input" type="file"
-                                                                        accept="image/png, image/gif, image/jpeg">
+                                                                    <!--<input class="form-control d-none" value=""-->
+                                                                    <!--    id="company-logo-input" type="file"-->
+                                                                    <!--    accept="image/png, image/gif, image/jpeg">-->
                                                                 </div>
                                                                 <div class="avatar-lg p-1">
                                                                     <div class="avatar-title bg-light rounded-circle">
-                                                                        <img src="{{ asset('assets/images/users/multi-user.jpg') }}"
+                                                                        <img src="{{ asset('assets/logo/1-02.png') }}"
                                                                             id="companylogo-img"
                                                                             class="avatar-md rounded-circle object-cover">
                                                                     </div>

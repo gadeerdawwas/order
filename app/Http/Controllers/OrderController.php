@@ -162,12 +162,21 @@ class OrderController extends Controller
     }
     public function ordersedit(Request $request , $id)
     {
+        if ($request->state == 1) {
+            Order::find($id)->update([
+                'state_payment' => $request->state
+            ]);
+            Alert::success('نجاح ', 'تم تعديل طلبية بنجاح');
+            return redirect()->back();
+        } else {
+            Order::find($id)->update([
+                'state_payment' => $request->state
+            ]);
+            // Alert::success('نجاح ', 'تم تعديل طلبية بنجاح');
+            return redirect()->back();
+        }
 
-        Order::find($id)->update([
-            'state_payment' => $request->state
-        ]);
-        Alert::success('نجاح ', 'تم تعديل طلبية بنجاح');
-        return redirect()->back();
+
     }
     public function itemsedit(Request $request , $id)
     {

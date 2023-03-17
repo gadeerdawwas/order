@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminControllerController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\CostController;
 use App\Http\Controllers\DashboardController;
@@ -48,8 +49,10 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function(){
     Route::resource('items', OrderController::class);
     Route::resource('costs', CostController::class);
     Route::resource('profits', ProfileController::class);
+    Route::resource('admins', AdminControllerController::class);
 
 
+    Route::get('order_user/{id}',[ItemController::class ,'order_user'])->name('order_user');
     Route::get('waitorder',[ItemController::class ,'waitorder'])->name('waitorder');
     Route::get('buyorder',[ItemController::class ,'buyorder'])->name('buyorder');
     Route::get('shopingorder',[ItemController::class ,'shopingorder'])->name('shopingorder');
@@ -65,6 +68,6 @@ Route::prefix('admin')->name('admin.')->middleware('auth')->group(function(){
 });
 
 
-Auth::routes();
+Auth::routes(['register' => false]);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

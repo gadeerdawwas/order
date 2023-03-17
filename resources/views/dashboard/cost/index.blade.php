@@ -79,7 +79,7 @@
                                             </div>
                                             <div class="flex-shrink-0">
                                                 <h5 class="text-success fs-14 mb-0">
-                                                    {{ $sumcost }}     دولار عراقي
+                                                    {{ $sumcost }}     دولار 
                                                 </h5>
                                             </div>
                                         </div>

@@ -101,4 +101,11 @@ class ItemController extends Controller
         $Feedback=Feedback::get();
         return view('dashboard.order.feedback',compact('Feedback'));
     }
+    public function order_user($id)
+    {
+        $orders=Order::where('user_id',$id)->orderBy('id','desc')->get();
+
+
+        return view('dashboard.order.index',compact('orders'));
+    }
 }

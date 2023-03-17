@@ -38,7 +38,7 @@
                                     <div class="col-md-3">
                                         <div class="search-box">
                                             <input type="text" class="form-control search"
-                                                placeholder="البحق عن الطلب  ...">
+                                                placeholder="البحث عن الطلب  ...">
                                             <i class="ri-search-line search-icon"></i>
                                         </div>
                                     </div>
@@ -54,17 +54,18 @@
                                                     <th scope="col" style="width: 50px;">
                                                         #
                                                     </th>
-                                                    <th class="sort" data-sort="name" scope="col">رقم الطلبية </th>
                                                     <th class="sort" data-sort="industry_type" scope="col">
                                                         اسم لزبون
                                                     </th>
+                                                    <th class="sort" data-sort="name" scope="col">رقم الطلبية </th>
+
                                                     <th class="sort" data-sort="industry_type" scope="col">
                                                         ملاحظة
                                                     </th>
 
 
 
-                                                    <th scope="col">العمليات</th>
+                                                    {{-- <th scope="col">العمليات</th> --}}
                                                 </tr>
                                             </thead>
                                             <tbody class="list form-check-all">
@@ -74,11 +75,11 @@
                                                         <td class="id"><a href="javascript:void(0);"
                                                                 class="fw-medium link-primary">{{ $loop->iteration }}</a>
                                                         </td>
-                                                        <td>
+                                                        {{-- <td>
                                                             <div class="d-flex align-items-center">
 
                                                                 <div class="flex-grow-1 ms-2 name">{{ $Feedback->id }}</div>
-                                                            </div>
+                                                            </div> --}}
                                                         </td>
                                                         <td>
                                                             <div class="d-flex align-items-center">

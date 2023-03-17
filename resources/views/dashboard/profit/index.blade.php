@@ -1,6 +1,11 @@
 @extends('dashboard.include.layout')
 
 @push('style')
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+
+
     <style>
         .zoom {
             /* padding: 100px; */
@@ -54,10 +59,13 @@
                                     <div class="flex-grow-1">
 
                                         {{-- @can('إضافة مصاريف الطلبات ') --}}
-                                            <a href="{{ route('admin.profits.create') }}" class="btn btn-info add-btn">
+                                            {{-- <a href="{{ route('admin.profits.create') }}" class="btn btn-info add-btn">
                                                 <i class="ri-add-fill me-1 align-bottom"></i>اضافة
                                                 دفعات لطلبات
-                                            </a>
+                                            </a> --}}
+                                            <button class="btn btn-info add-btn" data-bs-toggle="modal"
+                                            data-bs-target="#showModal"><i class="ri-add-fill me-1 align-bottom"></i>اضافة
+                                            دفعات لطلبات </button>
                                         {{-- @endcan --}}
 
 
@@ -285,7 +293,7 @@
                                     <div class="modal-dialog modal-dialog-centered modal-lg">
                                         <div class="modal-content bcost-0">
                                             <div class="modal-header bg-soft-info p-3">
-                                                <h5 class="modal-title" id="exampleModalLabel"></h5>
+                                                {{-- <h5 class="modal-title" id="exampleModalLabel"></h5> --}}
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                     aria-label="Close" id="close-modal"></button>
                                             </div>
@@ -299,90 +307,67 @@
                                                             <div class="text-center">
                                                                 <div class="position-relative d-inline-block">
                                                                     <div class="position-absolute bottom-0 end-0">
-                                                                        <label for="company-logo-input" class="mb-0"
-                                                                            data-bs-toggle="tooltip"
-                                                                            data-bs-placement="right"
-                                                                            aria-label="Select Image"
-                                                                            data-bs-original-title="Select Image">
-                                                                            <div class="avatar-xs cursor-pointer">
-                                                                                <div
-                                                                                    class="avatar-title bg-light bcost rounded-circle text-muted">
-                                                                                    <i class="ri-image-fill"></i>
-                                                                                </div>
-                                                                            </div>
-                                                                        </label>
-                                                                        <input class="form-control d-none" value=""
-                                                                            id="company-logo-input" type="file"
-                                                                            accept="image/png, image/gif, image/jpeg">
+
                                                                     </div>
-                                                                    <div class="avatar-lg p-1">
-                                                                        <div class="avatar-title bg-light rounded-circle">
-                                                                            <img src="{{ asset('assets/images/profits/multi-cost.jpg') }}"
-                                                                                id="companylogo-img"
-                                                                                class="avatar-md rounded-circle object-cover">
-                                                                        </div>
-                                                                    </div>
+
                                                                 </div>
                                                             </div>
 
+
                                                             <div class="row">
-                                                                <div class="col-lg-6">
+                                                                <div class="col-lg-12">
                                                                     <label for="companyname-field"
-                                                                        class="form-label">الاسم </label>
+                                                                        class="form-label">المبلغ </label>
                                                                     <input type="text" id="companyname-field"
-                                                                        name="name" required class="form-control"
-                                                                        placeholder="ادخل الاسم " required="">
+                                                                        name="amount" required class="form-control"
+                                                                        placeholder="ادخل المبلغ " required="">
                                                                 </div>
 
-                                                                <div class="col-lg-6">
-                                                                    <div>
-                                                                        <label for="owner-field" class="form-label">
-                                                                            العنوان</label>
-                                                                        <input type="text" id="owner-field"
-                                                                            name="address" required class="form-control"
-                                                                            placeholder="ادخل العنوان" required="">
-                                                                    </div>
-                                                                </div>
-
-
-
-                                                                <div class="col-lg-6">
-                                                                    <div>
-                                                                        <label for="location-field" class="form-label">رقم
-                                                                            الجوال
-                                                                        </label>
-                                                                        <input type="text" id="location-field"
-                                                                            name="phone" required class="form-control"
-                                                                            placeholder="ادخل رقم الجوال" required="">
-                                                                    </div>
-                                                                </div>
-
-
-                                                                <div class="col-lg-6">
+                                                                <div class="col-lg-12">
                                                                     <div>
                                                                         <label for="location-field" class="form-label">
-                                                                            كلمة المرور
+                                                                         ملاحظات
                                                                         </label>
-                                                                        <input id="password" type="password"
-                                                                            class="form-control" name="password" required
-                                                                            autocomplete="new-password">
+                                                                       <textarea class="form-control" name="note" id="" cols="5" rows="5"></textarea>
 
 
                                                                     </div>
                                                                 </div>
+                                                                <div class="mb-3">
+                                                                    <label class="form-label" for="product-title-input">إسم
+                                                                        لزبون</label>
 
-                                                                <div class="col-lg-6">
-                                                                    <div>
-                                                                        <label for="location-field" class="form-label">
-                                                                            تاكيد كلمة
-                                                                            المرور </label>
-                                                                        <input id="password-confirm" type="password"
-                                                                            class="form-control"
-                                                                            name="password_confirmation" required
-                                                                            autocomplete="new-password">
+
+
+                                                                   <select class="form-control"  name="user_id">
+
+                                                                    @if (auth()->user()->role == 2)
+                                                                    <option value="{{ auth()->user()->id }}">{{ auth()->user()->name }}</option>
+
+                                                                    @else
+                                                                    @foreach ($user as $u)
+                                                                    <option value="{{ $u->id }}">{{ $u->name }}</option>
+
+                                                                    @endforeach
+
+                                                                    @endif
+                                                                </select>
+
 
                                                                     </div>
-                                                                </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
                                                             </div>
 
 
@@ -427,6 +412,9 @@
 @endsection
 
 @push('script')
+<script type="text/javascript">
+    $(".myselect").select2();
+</script>
     <!-- list.js min js -->
     <script src="{{ asset('assets/libs/list.js/list.min.js') }}"></script>
     <script src="{{ asset('assets/libs/list.pagination.js/list.pagination.min.js') }}"></script>

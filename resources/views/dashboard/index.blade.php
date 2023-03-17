@@ -47,7 +47,7 @@
                                     <div class="card-body">
                                         <div class="d-flex align-items-center">
                                             <div class="flex-grow-1 overflow-hidden">
-                                                <h3 class="text-uppercase  text-truncate mb-0">  اجمالي الطلبات غير مدقوعة</h3>
+                                                <h3 class="text-uppercase  text-truncate mb-0">  اجمالي الطلبات غير مدفوعة</h3>
                                             </div>
 
                                         </div>
@@ -64,7 +64,7 @@
                                     </div><!-- end card body -->
                                 </div><!-- end card -->
                             </div><!-- end col -->
-
+                            @if (auth()->user()->role == 1)
                             <div class="col-xl-3 col-md-6">
                                 <!-- card -->
                                 <div class="card card-animate">
@@ -82,30 +82,6 @@
                                             <div class="avatar-sm flex-shrink-0">
                                                 <span class="avatar-title bg-warning rounded fs-3">
                                                     <i class="bx bx-user-circle"></i>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div><!-- end card body -->
-                                </div><!-- end card -->
-                            </div><!-- end col -->
-
-                            <div class="col-xl-3 col-md-6">
-                                <!-- card -->
-                                <div class="card card-animate">
-                                    <div class="card-body">
-                                        <div class="d-flex align-items-center">
-                                            <div class="flex-grow-1 overflow-hidden">
-                                                <h3 class="text-uppercase  text-truncate mb-0"> الطلبات المرجعة</h3>
-                                            </div>
-
-                                        </div>
-                                        <div class="d-flex align-items-end justify-content-between mt-4">
-                                            <div>
-                                                <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="{{ $total }}">{{ $total }}</span> </h4>
-                                            </div>
-                                            <div class="avatar-sm flex-shrink-0">
-                                                <span class="avatar-title bg-danger rounded fs-3">
-                                                    <i class="bx bx-wallet"></i>
                                                 </span>
                                             </div>
                                         </div>
@@ -159,6 +135,34 @@
                                     </div><!-- end card body -->
                                 </div><!-- end card -->
                             </div><!-- end col -->
+                            @endif
+
+
+                            <div class="col-xl-3 col-md-6">
+                                <!-- card -->
+                                <div class="card card-animate">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center">
+                                            <div class="flex-grow-1 overflow-hidden">
+                                                <h3 class="text-uppercase  text-truncate mb-0"> الطلبات المرجعة</h3>
+                                            </div>
+
+                                        </div>
+                                        <div class="d-flex align-items-end justify-content-between mt-4">
+                                            <div>
+                                                <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="{{ $total }}">{{ $total }}</span> </h4>
+                                            </div>
+                                            <div class="avatar-sm flex-shrink-0">
+                                                <span class="avatar-title bg-danger rounded fs-3">
+                                                    <i class="bx bx-wallet"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div><!-- end card body -->
+                                </div><!-- end card -->
+                            </div><!-- end col -->
+
+
                         </div>
 
 

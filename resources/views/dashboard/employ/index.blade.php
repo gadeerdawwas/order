@@ -58,7 +58,7 @@
                                     <div class="col-md-3">
                                         <div class="search-box">
                                             <input type="text" class="form-control search"
-                                                placeholder="البحق عن الموظف  ...">
+                                                placeholder="البحث عن الموظف  ...">
                                             <i class="ri-search-line search-icon"></i>
                                         </div>
                                     </div>
@@ -79,6 +79,7 @@
                                                     <th class="sort" data-sort="industry_type" scope="col">
                                                         رقم الجوال</th>
 
+                                                    {{-- <th scope="col">صلاحية </th> --}}
                                                     <th scope="col">العمليات</th>
                                                 </tr>
                                             </thead>
@@ -106,6 +107,14 @@
                                                         <td class="industry_type"> <a
                                                                 href="tel:+{{ $user->phone }}">{{ $user->phone }}</a>
                                                         </td>
+                                                        {{-- <td class="industry_type">
+                                                            @if ($user->role == 3 )
+                                                                <span>موظف</span>
+                                                            @endif
+                                                            @if ($user->role == 1 )
+                                                                <span>أدمن</span>
+                                                            @endif
+                                                        </td> --}}
 
                                                         <td>
                                                             <ul class="list-inline hstack gap-2 mb-0">
@@ -381,7 +390,7 @@
                                 <div class="modal-dialog modal-dialog-centered modal-lg">
                                     <div class="modal-content border-0">
                                         <div class="modal-header bg-soft-info p-3">
-                                            <h5 class="modal-title" id="exampleModalLabel"></h5>
+                                            {{-- <h5 class="modal-title" id="exampleModalLabel"></h5> --}}
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                                                 id="close-modal"></button>
                                         </div>
